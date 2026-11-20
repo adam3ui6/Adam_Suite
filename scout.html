@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adam Scout - كاشف الفرص</title>
+<style>
+body { font-family: sans-serif; background: #0b1120; color: #fff; padding: 20px; }
+.container { max-width: 600px; margin: auto; }
+input, button { width: 100%; padding: 15px; margin: 10px 0; border-radius: 8px; border: none; box-sizing: border-box;}
+input { background: #1e293b; color: #fff; border: 1px solid #334155; }
+button { background: #3b82f6; color: white; font-weight: bold; cursor: pointer; }
+#result { background: #1e293b; padding: 20px; border-radius: 8px; margin-top: 20px; min-height: 100px; line-height: 1.6;}
+a { color: #3b82f6; text-decoration: none; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+<div class="container">
+<a href="index.html">← العودة للمركز</a>
+<h2>🔍 Adam Scout</h2>
+<p>اكتب مجالاً أو كلمة مفتاحية لتحليل السوق واكتشاف الفرص:</p>
+<input type="text" id="query" placeholder="مثال: بيع القوالب الرقمية للمصممين">
+<button onclick="analyze()">تحليل الآن</button>
+<div id="result">النتائج ستظهر هنا...</div>
+</div>
+
+<script>
+// ⚠️ ضع مفتاح API الخاص بتطبيق Scout من Dify هنا
+const API_KEY = 'app-D87ZusA9IJyTnVygw9gNtyTS';
+
+async function analyze() {
+const query = document.getElementById('query').value;
+const resultDiv = document.getElementById('result');
+if(!query) return alert('أدخل كلمة للبحث');
+
+resultDiv.innerHTML = 'جاري التحليل... ⏳';
+
+try {
+const response = await fetch('https://api.dify.ai/v1/chat-messages', {
+method: 'POST',
+headers: {
+'Authorization': Bearer ${API_KEY}, 'Content-Type': 'application/json' }, body: JSON.stringify({ inputs: {}, query:قم بتحليل هذا المجال واقترح 3 فرص ربحية: ${query},
+response_mode: 'blocking',
+user: 'user-1'
+})
+});
+const data = await response.json();
+resultDiv.innerHTML = marked.parse(data.answer);
+} catch (e) {
+resultDiv.innerHTML = 'حدث خطأ في الاتصال. تأكد من المفتاح.';
+}
+}
+</script>
+</body>
+</html>
